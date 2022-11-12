@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-day-picker/dist/style.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
