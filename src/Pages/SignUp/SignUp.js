@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
@@ -7,15 +7,36 @@ import { toast } from 'react-toastify';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { createUser } = useContext(AuthContext)
+    const { createUser, googleSignIn, updateUser } = useContext(AuthContext)
+    const [signupError, setSignupError] = useState('')
+
 
     const handleSignUp = data => {
         console.log(data)
+        setSignupError('')
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user)
-                toast.success('Signup Successfully', { autoClose: 1000 })
+                toast.success('Signup Successfully', { autoClose: 500 })
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.error(err))
+            })
+            .catch(error => {
+                console.error(error)
+                setSignupError(error.message)
+            })
+    }
+
+    const handleGoogleLogin = () => {
+        googleSignIn()
+            .then(result => {
+                const user = result.user;
+                console.log(user)
             })
             .catch(err => console.error(err))
     }
@@ -55,11 +76,11 @@ const SignUp = () => {
                     </div>
 
                     <input className='btn btn-accent w-full mt-4' value='Sign Up' type="submit" />
+                    {signupError && <p className='text-error'>{signupError} </p>}
                     <p className='mt-2'>Already have an Account <Link className='text-primary' to='/login'>Please Login</Link></p>
                     <div className="divider">OR</div>
-                    <button class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
-
                 </form>
+                <button onClick={handleGoogleLogin} class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
             </div>
         </div>
     );

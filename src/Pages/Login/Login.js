@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
@@ -8,7 +8,11 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm()
-    const { userLogin } = useContext(AuthContext)
+    const { userLogin, googleSignIn } = useContext(AuthContext)
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleLogin = data => {
         console.log(data)
@@ -16,12 +20,22 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user)
-                toast.success('Login Successfully', { autoClose: 1000 })
+                navigate(from, { replace: true })
+                toast.success('Login Successfully', { autoClose: 500 })
             })
             .catch(err => {
                 console.error(err)
-                toast.error('PassWord Wrong Please Try Again', { autoClose: 1000 })
+                toast.error('PassWord Wrong Please Try Again', { autoClose: 2000 })
             })
+    }
+
+    const handleGoogleLogin = () => {
+        googleSignIn()
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(err => console.error(err))
     }
 
     return (
@@ -54,9 +68,8 @@ const Login = () => {
                     <input className='btn btn-accent w-full' value='Login' type="submit" />
                     <p className='mt-2'>New to Doctors Portal <Link className='text-primary' to='/signup'>Create New Account</Link></p>
                     <div className="divider">OR</div>
-                    <button class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
-
                 </form>
+                <button onClick={handleGoogleLogin} class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
             </div>
         </div>
     );
