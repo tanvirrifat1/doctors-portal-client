@@ -5,19 +5,14 @@ import BookingModal from '../BookingModal/BookingModal';
 import AppointmentOptions from './AppointmentOptions';
 
 const AvailableAppointment = ({ selectedData }) => {
-    // const [appointmentOptions, setAppointmentOptions] = useState([])
     const [treatment, setTreatment] = useState(null)
 
-    // const { data: appointmentOptions = [] } = useQuery({
-    //     queryKey: ['appointmentOptions'],
-    //     queryFn: () => fetch('http://localhost:5000/appointmentOptions')
-    //         .then(res => res.json())
-    // })
-
+    const date = format(selectedData, 'PP')
+    console.log(date)
     const { data: appointmentOptions = [] } = useQuery({
-        queryKey: ['appointmentOptions'],
+        queryKey: ['appointmentOptions', date],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/appointmentOptions');
+            const res = await fetch(`http://localhost:5000/appointmentOptions?date=${date}`);
             const data = await res.json();
             return data;
         }

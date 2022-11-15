@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../../context/AuthProvider';
 
 const BookingModal = ({ treatment, selectedData, setTreatment }) => {
-    const { name, slots } = treatment;
+    const { name: treatmentName, slots } = treatment;
     const date = format(selectedData, 'PP')
     const { user } = useContext(AuthContext)
 
@@ -18,7 +18,7 @@ const BookingModal = ({ treatment, selectedData, setTreatment }) => {
 
         const booking = {
             appointmentDate: date,
-            treatment: name,
+            treatment: treatmentName,
             patient: name,
             slot,
             email,
@@ -49,7 +49,7 @@ const BookingModal = ({ treatment, selectedData, setTreatment }) => {
             <div className="modal">
                 <div className="modal-box relative">
                     <label htmlFor="booking-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    <h3 className="text-lg font-bold">{name}</h3>
+                    <h3 className="text-lg font-bold">{treatmentName}</h3>
                     <form onSubmit={handleBooking} className='grid grid-cols-1 gap-3 mt-10'>
                         <input name='slot' type="text" value={date} className="input input-bordered input-primary w-full" />
                         <select className="select select-bordered border-info w-full">
