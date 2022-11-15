@@ -1,20 +1,23 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { AuthContext } from '../../context/AuthProvider';
 import { toast } from 'react-toastify';
 import Tittle from '../../Hook/Tittle';
+import { ThreeDots } from 'react-loader-spinner'
+
 
 
 const SignUp = () => {
     Tittle('SignUp')
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { createUser, googleSignIn, updateUser } = useContext(AuthContext)
+    const { createUser, googleSignIn, updateUser, loading } = useContext(AuthContext)
     const [signupError, setSignupError] = useState('')
+    const navigate = useNavigate()
 
 
-    const handleSignUp = data => {
+    const handleSignUp = (data) => {
         console.log(data)
         setSignupError('')
 
@@ -23,13 +26,14 @@ const SignUp = () => {
                 const user = result.user
                 console.log(user)
                 toast.success('signUp successful0', { autoClose: 500 })
-                // const userInfo = {
-                //     displayName: data.name,
-                //     photoURL: data.url,
-                // }
+                const userInfo = {
+                    displayName: data.name,
+                    photoURL: data.photoURL,
+                }
 
-                updateUser(data.name, data.photoURL)
+                updateUser(userInfo)
                     .then(() => {
+                        navigate('/')
                     })
                     .catch(er => console.error(er))
             })
@@ -46,6 +50,20 @@ const SignUp = () => {
                 console.log(user)
             })
             .catch(err => console.error(err))
+    }
+    if (loading) {
+        return <div className='flex justify-center mt-10'>
+            <ThreeDots
+                height="80"
+                width="80"
+                radius="9"
+                color="#4fa94d"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+            />
+        </div>
     }
 
     return (
