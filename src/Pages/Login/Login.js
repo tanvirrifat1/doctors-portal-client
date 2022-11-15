@@ -1,14 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaGoogle } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthProvider';
 import { toast } from 'react-toastify';
+import Tittle from '../../Hook/Tittle';
+import { ThreeDots } from 'react-loader-spinner'
 
 
 const Login = () => {
+    Tittle('Login')
     const { register, formState: { errors }, handleSubmit } = useForm()
-    const { userLogin, googleSignIn } = useContext(AuthContext)
+    const { userLogin, googleSignIn, loading } = useContext(AuthContext)
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -36,6 +39,21 @@ const Login = () => {
                 console.log(user)
             })
             .catch(err => console.error(err))
+    }
+
+    if (loading) {
+        return <div className='flex justify-center mt-10'>
+            <ThreeDots
+                height="80"
+                width="80"
+                radius="9"
+                color="#4fa94d"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+            />
+        </div>
     }
 
     return (
@@ -70,6 +88,7 @@ const Login = () => {
                     <div className="divider">OR</div>
                 </form>
                 <button onClick={handleGoogleLogin} class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
+                <button class="btn btn-outline btn-success w-full mt-3"><FaGithub className='mr-2 text-2xl'></FaGithub> CONTINUE WITH GITHUB</button>
             </div>
         </div>
     );

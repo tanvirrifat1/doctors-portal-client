@@ -1,4 +1,5 @@
 import React from 'react';
+import Tittle from '../../../Hook/Tittle';
 import Banner from '../Banner/Banner';
 import ContactUs from '../ContactUs/ContactUs';
 import InfoCards from '../Infocards/InfoCards';
@@ -8,6 +9,7 @@ import Services from '../Services/Services';
 import Testimonial from '../Testimonial/Testimonial';
 
 const Home = () => {
+    Tittle('Home')
     return (
         <div className='mx-5'>
             <Banner></Banner>

@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { FaGoogle } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { AuthContext } from '../../context/AuthProvider';
 import { toast } from 'react-toastify';
+import Tittle from '../../Hook/Tittle';
+
 
 const SignUp = () => {
+    Tittle('SignUp')
     const { register, handleSubmit, formState: { errors } } = useForm()
     const { createUser, googleSignIn, updateUser } = useContext(AuthContext)
     const [signupError, setSignupError] = useState('')
@@ -14,21 +17,25 @@ const SignUp = () => {
     const handleSignUp = data => {
         console.log(data)
         setSignupError('')
+
         createUser(data.email, data.password)
             .then(result => {
-                const user = result.user;
+                const user = result.user
                 console.log(user)
-                toast.success('Signup Successfully', { autoClose: 500 })
-                const userInfo = {
-                    displayName: data.name
-                }
-                updateUser(userInfo)
-                    .then(() => { })
-                    .catch(err => console.error(err))
+                toast.success('signUp successful0', { autoClose: 500 })
+                // const userInfo = {
+                //     displayName: data.name,
+                //     photoURL: data.url,
+                // }
+
+                updateUser(data.name, data.photoURL)
+                    .then(() => {
+                    })
+                    .catch(er => console.error(er))
             })
-            .catch(error => {
-                console.error(error)
-                setSignupError(error.message)
+            .catch(err => {
+                console.error(err)
+                setSignupError(err.message)
             })
     }
 
@@ -81,6 +88,7 @@ const SignUp = () => {
                     <div className="divider">OR</div>
                 </form>
                 <button onClick={handleGoogleLogin} class="btn btn-outline btn-info w-full"><FaGoogle className='mr-2 text-2xl'></FaGoogle> CONTINUE WITH GOOGLE</button>
+                <button class="btn btn-outline btn-success w-full mt-3"><FaGithub className='mr-2 text-2xl'></FaGithub> CONTINUE WITH GITHUB</button>
             </div>
         </div>
     );
