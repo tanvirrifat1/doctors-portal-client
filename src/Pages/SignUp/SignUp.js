@@ -6,9 +6,6 @@ import { AuthContext } from '../../context/AuthProvider';
 import { toast } from 'react-toastify';
 import Tittle from '../../Hook/Tittle';
 import { ThreeDots } from 'react-loader-spinner'
-// import { json } from 'node:stream/consumers';
-// import { data } from 'autoprefixer';
-
 
 
 const SignUp = () => {
