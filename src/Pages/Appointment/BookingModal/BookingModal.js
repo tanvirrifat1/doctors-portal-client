@@ -35,13 +35,14 @@ const BookingModal = ({ treatment, selectedData, setTreatment, refetch }) => {
             .then(res => res.json())
             .then(data => {
                 console.log(data)
+                refetch();
                 if (data.acknowledged) {
                     setTreatment(null)
                     toast.success('Booking Confirmed', { autoClose: 500 })
                     refetch();
                 }
                 else {
-                    toast.error(data.message, 'never gone', { autoClose: 1000 })
+                    toast.error(data.message, { autoClose: 1000 })
                 }
             })
     }
