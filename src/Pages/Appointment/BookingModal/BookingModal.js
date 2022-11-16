@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../../context/AuthProvider';
 
-const BookingModal = ({ treatment, selectedData, setTreatment }) => {
+const BookingModal = ({ treatment, selectedData, setTreatment, refetch }) => {
     const { name: treatmentName, slots } = treatment;
     const date = format(selectedData, 'PP')
     const { user } = useContext(AuthContext)
@@ -24,7 +24,7 @@ const BookingModal = ({ treatment, selectedData, setTreatment }) => {
             email,
             phone,
         }
-
+        console.log(booking)
         fetch('http://localhost:5000/bookings', {
             method: 'POST',
             headers: {
@@ -38,9 +38,12 @@ const BookingModal = ({ treatment, selectedData, setTreatment }) => {
                 if (data.acknowledged) {
                     setTreatment(null)
                     toast.success('Booking Confirmed', { autoClose: 500 })
+                    refetch();
+                }
+                else {
+                    toast.error(data.message, 'never gone', { autoClose: 1000 })
                 }
             })
-        form.reset()
     }
 
     return (
@@ -51,9 +54,9 @@ const BookingModal = ({ treatment, selectedData, setTreatment }) => {
                     <label htmlFor="booking-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                     <h3 className="text-lg font-bold">{treatmentName}</h3>
                     <form onSubmit={handleBooking} className='grid grid-cols-1 gap-3 mt-10'>
-                        <input name='slot' type="text" value={date} className="input input-bordered input-primary w-full" />
-                        <select className="select select-bordered border-info w-full">
-                            <option>Who shot first?</option>
+                        <input name='date' type="text" value={date} className="input input-bordered input-primary w-full" />
+                        <select name='slot' className="select select-bordered border-info w-full">
+                            {/* <option>Who shot first?</option> */}
                             {
                                 slots.map((slot, i) => <option
                                     value={slot}
