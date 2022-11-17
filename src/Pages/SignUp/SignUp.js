@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/AuthProvider';
 import { toast } from 'react-toastify';
 import Tittle from '../../Hook/Tittle';
 import { ThreeDots } from 'react-loader-spinner'
+import useToken from '../../Hooks/useToken';
 
 
 const SignUp = () => {
@@ -13,8 +14,14 @@ const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const { createUser, googleSignIn, updateUser, loading } = useContext(AuthContext)
     const [signupError, setSignupError] = useState('')
+    const [createdUserEmail, setCreatedUserEmail] = useState('')
+
+    const [token] = useToken(createdUserEmail)
     const navigate = useNavigate()
 
+    if (token) {
+        navigate('/')
+    }
 
     const handleSignUp = (data) => {
         console.log(data)
@@ -63,9 +70,20 @@ const SignUp = () => {
             .then(res => res.json())
             .then(data => {
                 console.log('saveUser', data)
-                navigate('/')
+                setCreatedUserEmail(email)
             })
     }
+
+    // const getUserToken = email => {
+    //     fetch(`http://localhost:5000/jwt?email=${email}`)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             if (data.accessToken) {
+    //                 localStorage.setItem('accessToken', data.accessToken)
+    //                 // navigate('/')
+    //             }
+    //         })
+    // }
 
     if (loading) {
         return <div className='flex justify-center mt-10'>
