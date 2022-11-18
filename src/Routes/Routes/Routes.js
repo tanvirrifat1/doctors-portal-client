@@ -6,6 +6,7 @@ import Appointment from "../../Pages/Appointment/Appointment/Appointment";
 import AllUsers from "../../Pages/DasBoard/AllUsers/AllUsers";
 import AddDoctor from "../../Pages/DasBoard/DasBoard/AddDoctors/AddDoctor";
 import DasBoard from "../../Pages/DasBoard/DasBoard/DasBoard";
+import ManageDoctors from "../../Pages/DasBoard/ManageDoctors/ManageDoctors";
 import MyAppointment from "../../Pages/DasBoard/MyAppointment/MyAppointment";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/adddoctor',
                 element: <AdminRoutes><AddDoctor></AddDoctor> </AdminRoutes>
+            },
+            {
+                path: '/dashboard/managedoctors',
+                element: <AdminRoutes><ManageDoctors></ManageDoctors></AdminRoutes>
             },
         ]
     }

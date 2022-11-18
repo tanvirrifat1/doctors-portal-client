@@ -3,8 +3,10 @@ import { Link, Outlet } from 'react-router-dom';
 import { AuthContext } from '../context/AuthProvider';
 import useAdmin from '../Hooks/UseAdmin';
 import Navbar from '../Pages/Shared/Navbar/Navbar';
+import Tittle from '../Hook/Tittle'
 
 const DashboardLayout = () => {
+    Tittle('AllOptions')
     const { user } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
     return (
@@ -25,6 +27,7 @@ const DashboardLayout = () => {
                             isAdmin && <>
                                 <li className='text-black'><Link to='/dashboard/allusers'>All Users</Link></li>
                                 <li className='text-black'><Link to='/dashboard/adddoctor'>Add a Doctor</Link></li>
+                                <li className='text-black'><Link to='/dashboard/managedoctors'>Manage Doctors</Link></li>
                             </>
                         }
 
