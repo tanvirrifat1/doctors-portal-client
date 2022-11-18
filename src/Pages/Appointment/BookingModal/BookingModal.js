@@ -57,7 +57,6 @@ const BookingModal = ({ treatment, selectedData, setTreatment, refetch }) => {
                     <form onSubmit={handleBooking} className='grid grid-cols-1 gap-3 mt-10'>
                         <input name='date' type="text" value={date} className="input input-bordered input-primary w-full" />
                         <select name='slot' className="select select-bordered border-info w-full">
-                            {/* <option>Who shot first?</option> */}
                             {
                                 slots.map((slot, i) => <option
                                     value={slot}
