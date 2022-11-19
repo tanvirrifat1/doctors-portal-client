@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import Loading from '../../Loading/Loading';
 import ConfirmationModal from '../../Shared/ConfirmationModal/ConfirmationModal';
 
@@ -10,11 +11,7 @@ const ManageDoctors = () => {
         setDeletingDoctor(null)
     }
 
-    const handleDeleteDoctor = doctor => {
-        console.log(doctor)
-    }
-
-    const { data: doctors, isLoading } = useQuery({
+    const { data: doctors, isLoading, refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
@@ -32,13 +29,29 @@ const ManageDoctors = () => {
         }
     })
 
+    const handleDeleteDoctor = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount) {
+                    refetch()
+                    toast.success(`Doctors ${doctor.name} delete successfully`, { autoClose: 500 })
+                }
+            })
+    }
+
     if (isLoading) {
         return <Loading></Loading>
     }
 
     return (
         <div>
-            <h2 className="text-3xl">Manage Doctors {doctors?.length}</h2>
+            <h2 className="text-3xl ml-4 mb-3">Manage Doctors {doctors?.length}</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -82,6 +95,7 @@ const ManageDoctors = () => {
                     message={`If you delete ${deletingDoctor.name}. It cannot be undone`}
                     successAction={handleDeleteDoctor}
                     modalData={deletingDoctor}
+                    successButtonName="Delete"
                     closeModal={closeModal}
                 >
 
