@@ -1,8 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import Loading from '../../Loading/Loading';
+import ConfirmationModal from '../../Shared/ConfirmationModal/ConfirmationModal';
 
 const ManageDoctors = () => {
+    const [deletingDoctor, setDeletingDoctor] = useState(null)
+
+    const closeModal = () => {
+        setDeletingDoctor(null)
+    }
+
+    const handleDeleteDoctor = doctor => {
+        console.log(doctor)
+    }
+
     const { data: doctors, isLoading } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
@@ -53,15 +64,29 @@ const ManageDoctors = () => {
                                     <td>{doctor.name}</td>
                                     <td>{doctor.email}</td>
                                     <td>{doctor.specialty}</td>
-                                    <td><button className="btn btn-error btn-square">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                    </button></td>
+                                    <td>
+                                        <button className="btn btn-square btn-error">
+                                            <label onClick={() => setDeletingDoctor(doctor)} htmlFor="confirmation-modal"> <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg></label>
+                                        </button>
+                                    </td>
                                 </tr>)
                         }
 
                     </tbody>
                 </table>
             </div>
+            {
+                deletingDoctor && <ConfirmationModal
+                    title={`Are you sure you want to delete?`}
+                    message={`If you delete ${deletingDoctor.name}. It cannot be undone`}
+                    successAction={handleDeleteDoctor}
+                    modalData={deletingDoctor}
+                    closeModal={closeModal}
+                >
+
+                </ConfirmationModal>
+            }
         </div>
     );
 };
