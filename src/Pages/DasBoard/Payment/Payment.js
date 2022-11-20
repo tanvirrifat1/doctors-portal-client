@@ -1,7 +1,9 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import React from 'react';
+import { useNavigation } from 'react-day-picker';
 import { useLoaderData } from 'react-router-dom';
+import Loading from '../../Loading/Loading';
 import CheckOutForm from './CheckOutForm';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
@@ -9,7 +11,15 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
 const Payment = () => {
     const booking = useLoaderData()
+
+    // const navigation = useNavigation()
+
     const { treatment, price, appointmentDate, slot } = booking;
+
+    // if (navigation.state === 'Loading') {
+    //     return <Loading></Loading>
+    // }
+
     return (
         <div className='text-black'>
             <h2 className="text-2xl">Payment for {treatment} </h2>
