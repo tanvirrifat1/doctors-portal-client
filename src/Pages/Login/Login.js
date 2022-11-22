@@ -46,6 +46,7 @@ const Login = () => {
         googleSignIn()
             .then(result => {
                 const user = result.user;
+                setLoginUserEmail(user.email)
                 console.log(user)
             })
             .catch(err => console.error(err))

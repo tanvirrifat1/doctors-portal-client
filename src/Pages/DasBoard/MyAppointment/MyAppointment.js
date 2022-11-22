@@ -6,7 +6,7 @@ import { AuthContext } from '../../../context/AuthProvider';
 const MyAppointment = () => {
     const { user } = useContext(AuthContext)
 
-    const url = `http://localhost:5000/bookings?email=${user?.email}`;
+    const url = `https://doctors-portal-server-ten-rust.vercel.app/bookings?email=${user?.email}`;
 
     const { data: bookings = [] } = useQuery({
         queryKey: ['bookings', user?.email],
@@ -27,7 +27,7 @@ const MyAppointment = () => {
             <div className="overflow-x-auto">
                 <table className="table w-full ">
                     <thead>
-                        <tr className='text-white'>
+                        <tr >
                             <th></th>
                             <th>Name</th>
                             <th>Treatment</th>
