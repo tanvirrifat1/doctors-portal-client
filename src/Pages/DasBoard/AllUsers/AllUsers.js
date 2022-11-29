@@ -13,7 +13,7 @@ const AllUsers = () => {
     })
 
     const handleMakeAdmin = id => {
-        fetch(` https://doctors-portal-server-tanvirrifat1.vercel.app/users/admin/${id}`, {
+        fetch(`https://doctors-portal-server-tanvirrifat1.vercel.app/users/admin/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -26,6 +26,23 @@ const AllUsers = () => {
                     toast.success('Make admin successfully', { autoClose: 500 })
                     refetch()
                 }
+            })
+    }
+
+    const handleDelete = id => {
+        fetch(`https://doctors-portal-server-tanvirrifat1.vercel.app/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.deletedCount > 0) {
+                    toast.success('Delete successfully', { autoClose: 500 })
+                }
+                refetch()
             })
     }
 
@@ -51,7 +68,7 @@ const AllUsers = () => {
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>{user?.role !== 'admin' && <button onClick={() => handleMakeAdmin(user._id)} className='text-white btn btn-xs btn-primary'>Make Admin</button>}</td>
-                                    <td><button className="btn btn-square">
+                                    <td><button onClick={() => handleDelete(user?._id)} className="btn btn-square">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
                                     </td>
