@@ -69,7 +69,7 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/payment/:id',
                 element: <Payment />,
-                loader: ({ params }) => fetch(`https://doctors-portal-server-ten-rust.vercel.app/bookings/${params.id}`)
+                loader: ({ params }) => fetch(` https://doctors-portal-server-tanvirrifat1.vercel.app/bookings/${params.id}`)
             },
         ]
     }
